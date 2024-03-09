@@ -1,13 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using RockPaperScissors;
 using RockPaperScissors.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddGrpc();
+
+var constr = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<RpstestContext>(options => options.UseNpgsql(constr));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();
 app.MapGet("/",
     () =>
