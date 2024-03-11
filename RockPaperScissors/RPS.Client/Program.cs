@@ -1,14 +1,68 @@
 ﻿using Grpc.Net.Client;
-using RPS.Client;
+using PRS.Client;
 
-// создаем канал для обмена сообщениями с сервером
-// параметр - адрес сервера gRPC
 using var channel = GrpcChannel.ForAddress("https://localhost:7235");
-// создаем клиент
-var client = new Greeter.GreeterClient(channel);
-Console.Write("Введите имя: ");
-var name = Console.ReadLine();
-// обмениваемся сообщениями с сервером
-var reply = await client.SayHelloAsync(new HelloRequest { Name = name });
-Console.WriteLine($"Ответ сервера: {reply.Message}");
-Console.ReadKey();
+
+while (true)
+{
+    Console.WriteLine("Выберите действие:\n" +
+                      "1. Войти\n" +
+                      "2. Зарегистрироваться");
+    
+    var ans = Console.ReadLine();
+    if (ans != "1" && ans != "2")
+    {
+        Console.WriteLine("Некорректный ответ. Попробуйте еще раз");
+        continue;
+    }
+
+    var client = new UserService.UserServiceClient(channel);
+
+    while (true)
+    {
+        
+        Console.Write("Введите логин: ");
+        var login = Console.ReadLine();
+
+        Console.Write("Введите пароль: ");
+        var password = Console.ReadLine();
+
+        if (ans == "2")
+        {
+            try
+            {
+                client.CreateUser(new CreateUserRequest()
+                {
+                    Login = login,
+                    Password = password
+                });
+                Console.WriteLine("Регистрация прошла успешно");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + "\nПопробуйте еще раз");
+                continue;
+            }
+        }
+
+        try
+        {
+            var user = client.GetUser(new GetUserRequest()
+            {
+                Login = login,
+                Password = password
+            });
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message + "\nПопробуйте еще раз");
+            continue;
+        }
+        
+        Console.ReadKey();
+        break;
+    }
+    break;
+}
+

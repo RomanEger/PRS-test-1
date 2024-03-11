@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "RockPaperScissors";
+
+package user;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service UserService{
+
+  rpc ListUsers(google.protobuf.Empty) returns (ListReply);
+  rpc GetUser(GetUserRequest) returns (UserReply);
+  rpc CreateUser(CreateUserRequest) returns (UserReply);
+  rpc UpdateUser(UpdateUserRequest) returns (UserReply);
+  rpc DeleteUser(DeleteUserRequest) returns (UserReply);
+}
+
+message CreateUserRequest{
+  string login = 1;
+  string password = 2;
+}
+
+message GetUserRequest{
+  int32 id = 1;
+  google.protobuf.StringValue login = 2;
+  string password = 3;
+}
+
+message UpdateUserRequest{
+  int32 id = 1;
+  string login = 2;
+  string password = 3;
+  double balance = 4;
+}
+
+message DeleteUserRequest{
+  int32 id = 1;
+}
+
+message ListReply{
+  repeated UserReply Users = 1;
+}
+
+message UserReply{
+  int32 id = 1;
+  string login = 2;
+  string password = 3;
+  double balance = 4;
+}

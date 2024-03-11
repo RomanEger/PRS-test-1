@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Entities.Models;
 
-namespace RockPaperScissors;
+namespace Repository;
 
 public partial class RpstestContext : DbContext
 {
@@ -24,7 +23,7 @@ public partial class RpstestContext : DbContext
     public virtual DbSet<ResultOption> ResultOptions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=rpstest;Username=postgres;Password=qwerty");
@@ -132,6 +131,7 @@ public partial class RpstestContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Balance)
                 .HasPrecision(10, 2)
+                .HasDefaultValue(0)
                 .HasColumnName("balance");
             entity.Property(e => e.Login)
                 .HasMaxLength(50)

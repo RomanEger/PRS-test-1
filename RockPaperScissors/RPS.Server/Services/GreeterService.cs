@@ -1,5 +1,4 @@
 using Grpc.Core;
-using RockPaperScissors;
 
 namespace RockPaperScissors.Services;
 

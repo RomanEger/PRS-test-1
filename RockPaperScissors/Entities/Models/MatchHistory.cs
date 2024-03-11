@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RockPaperScissors;
+﻿namespace Entities.Models;
 
 public partial class MatchHistory
 {
     public int Id { get; set; }
 
+    public int MatchId { get; set; }
+    
     public int FirstUserId { get; set; }
 
     public int SecondUserId { get; set; }
